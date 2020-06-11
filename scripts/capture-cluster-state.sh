@@ -23,14 +23,7 @@ if kubectl get namespace "${NAMESPACE}" 1> /dev/null 2> /dev/null; then
 
   echo "Listing resources in namespace - ${resources}"
   kubectl get -n "${NAMESPACE}" "${resources}" -o jsonpath='{range .items[*]}{.metadata.namespace}{"/"}{.kind}{"/"}{.metadata.name}{"\n"}{end}' | \
-    tr '[:upper:]' '[:lower:]' | \
-    grep -v "icr-io" | \
-    grep -v "ibmcloud-config" | \
-    grep -v "ibmcloud-apikey" | \
-    grep -v "secret/builder" | \
-    grep -v "secret/deployer" | \
-    grep -v "secret/default-dockercfg" | \
-    grep -v "default-token" > "${OUTFILE}"
+    tr '[:upper:]' '[:lower:]' > "${OUTFILE}"
 else
   echo "Namespace does not exist - ${NAMESPACE}"
   touch "${OUTFILE}"
@@ -40,3 +33,5 @@ if kubectl get subscription --all-namespaces 1> /dev/null 2> /dev/null; then
   kubectl get --all-namespaces subscription -o jsonpath='{range .items[*]}{.metadata.namespace}{"/"}{.kind}{"/"}{.metadata.name}{"\n"}{end}' 2> /dev/null | \
     tr '[:upper:]' '[:lower:]' >> "${OUTFILE}"
 fi
+
+cat "${OUTFILE}"
