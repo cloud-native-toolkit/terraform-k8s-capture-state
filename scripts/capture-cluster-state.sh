@@ -4,7 +4,7 @@ PLATFORM="$1"
 NAMESPACE="$2"
 OUTFILE="$3"
 
-OUTFILE_DIR=$(cd $(dirname "${OUTFILE}"); pwd -P)
+OUTFILE_DIR=$(dirname "${OUTFILE}")
 
 mkdir -p "${OUTFILE_DIR}"
 
