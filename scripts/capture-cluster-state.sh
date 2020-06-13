@@ -29,8 +29,8 @@ else
   touch "${OUTFILE}"
 fi
 
-if kubectl get subscription --all-namespaces 1> /dev/null 2> /dev/null; then
-  kubectl get --all-namespaces subscription -o jsonpath='{range .items[*]}{.metadata.namespace}{"/"}{.kind}{"/"}{.metadata.name}{"\n"}{end}' 2> /dev/null | \
+if kubectl get -n "${NAMESPACE}" subscription 1> /dev/null 2> /dev/null; then
+  kubectl get -n "${NAMESPACE}" subscription -o jsonpath='{range .items[*]}{.metadata.namespace}{"/"}{.kind}{"/"}{.metadata.name}{"\n"}{end}' 2> /dev/null | \
     tr '[:upper:]' '[:lower:]' >> "${OUTFILE}"
 fi
 
