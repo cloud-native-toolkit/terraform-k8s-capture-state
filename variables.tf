@@ -17,3 +17,9 @@ variable "cluster_config_file_path" {
   type        = string
   description = "The path and file name to the file containing the cluster configuration"
 }
+
+variable "exclude_resources" {
+  type        = list(string)
+  description = "A list of resources that should be excluded from the namespace snapshot"
+  default     = []
+}

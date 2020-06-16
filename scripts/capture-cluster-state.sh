@@ -3,6 +3,7 @@
 PLATFORM="$1"
 NAMESPACE="$2"
 OUTFILE="$3"
+EXCLUSIONS="$4"
 
 OUTFILE_DIR=$(dirname "${OUTFILE}")
 
@@ -22,8 +23,14 @@ echo "Checking on namespace - ${NAMESPACE}"
 if kubectl get namespace "${NAMESPACE}" 1> /dev/null 2> /dev/null; then
 
   echo "Listing resources in namespace - ${resources}"
-  kubectl get -n "${NAMESPACE}" "${resources}" -o jsonpath='{range .items[*]}{.metadata.namespace}{"/"}{.kind}{"/"}{.metadata.name}{"\n"}{end}' | \
-    tr '[:upper:]' '[:lower:]' > "${OUTFILE}"
+  RESOURCES=$(kubectl get -n "${NAMESPACE}" "${resources}" -o jsonpath='{range .items[*]}{.metadata.namespace}{"/"}{.kind}{"/"}{.metadata.name}{"\n"}{end}' | tr '[:upper:]' '[:lower:]')
+
+  IFS=","
+  for exclusion in ${EXCLUSIONS}; do
+    RESOURCES=$(echo "${RESOURCES}" | grep -v "${exclusion}")
+  done
+
+  echo "${RESOURCES}" > "${OUTFILE}"
 else
   echo "Namespace does not exist - ${NAMESPACE}"
   touch "${OUTFILE}"
