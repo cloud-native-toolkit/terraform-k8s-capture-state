@@ -26,8 +26,11 @@ echo "Checking on namespace - ${NAMESPACE}"
 
 if kubectl get namespace "${NAMESPACE}" 1> /dev/null 2> /dev/null; then
 
+  echo "install helm"
+  curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+
   echo "deploy tool-test chart to namespace ${NAMESPACE}"
-  helm3 template destroytest tool-test \
+  helm template destroytest tool-test \
     --repo "https://ibm-garage-cloud.github.io/toolkit-charts/" \
     --version 0.1.0  \
     --set global.clusterType=${clusterType} |  kubectl apply -n ${NAMESPACE} -f -
