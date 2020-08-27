@@ -32,7 +32,7 @@ if kubectl get namespace "${NAMESPACE}" 1> /dev/null 2> /dev/null; then
   echo "deploy tool-test chart to namespace ${NAMESPACE}"
   helm template destroytest tool-test \
     --repo "https://ibm-garage-cloud.github.io/toolkit-charts/" \
-    --version 0.2.0  \
+    --version 0.2.1  \
     --set global.clusterType=${clusterType} |  kubectl apply -n ${NAMESPACE} -f -
   
   kubectl rollout status deployment tool-test -n ${NAMESPACE}
