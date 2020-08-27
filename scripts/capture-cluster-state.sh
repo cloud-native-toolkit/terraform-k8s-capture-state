@@ -34,6 +34,8 @@ if kubectl get namespace "${NAMESPACE}" 1> /dev/null 2> /dev/null; then
     --repo "https://ibm-garage-cloud.github.io/toolkit-charts/" \
     --version 0.2.0  \
     --set global.clusterType=${clusterType} |  kubectl apply -n ${NAMESPACE} -f -
+  
+  kubectl rollout status deployment tool-test -n ${NAMESPACE}
 
   echo "Listing resources in namespace - ${resources}"
   RESOURCES=$(kubectl get -n "${NAMESPACE}" "${resources}" -o jsonpath='{range .items[*]}{.metadata.namespace}{"/"}{.kind}{"/"}{.metadata.name}{"\n"}{end}' | tr '[:upper:]' '[:lower:]')
