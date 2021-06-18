@@ -11,4 +11,5 @@ output "outfile" {
 output "cluster_type" {
   value = var.cluster_type
   depends_on = [null_resource.write_kubeconfig]
+  sensitive = true
 }
