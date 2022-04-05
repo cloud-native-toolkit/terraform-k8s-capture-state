@@ -5,6 +5,8 @@ NAMESPACE="$2"
 OUTFILE="$3"
 EXCLUSIONS="$4"
 
+export PATH="${BIN_DIR}:${PATH}"
+
 OUTFILE_DIR=$(dirname "${OUTFILE}")
 
 clusterType="${PLATFORM}"
@@ -25,9 +27,6 @@ fi
 echo "Checking on namespace - ${NAMESPACE}"
 
 if kubectl get namespace "${NAMESPACE}" 1> /dev/null 2> /dev/null; then
-
-  echo "install helm"
-  curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 
   echo "deploy tool-test chart to namespace ${NAMESPACE}"
   helm template destroytest tool-test \
